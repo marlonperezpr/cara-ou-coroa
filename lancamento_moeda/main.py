@@ -5,29 +5,39 @@ import re
 
 print("Jogo de Cara ou Coroa")
 print()
-cara_ou_coroa = [0, 1]
-resultado = random.choice(cara_ou_coroa)
+cara_ou_coroa = {"cara": 0, "coroa": 1}
+
+def gerar_resultado():
+    return random.choice(list(cara_ou_coroa.values()))  
+
+def validar_entrada(escolha):
+    return escolha in ["0", "1"]
+
+vitorias = 0
+derrotas = 0
 
 while True:
-    if resultado == 0:
-        resultado = "cara"
-    elif resultado == 1:
-        resultado = "coroa"
-
+    moeda = gerar_resultado()
     escolha = input("Escolha [0] para cara ou [1] para  coroa: ")
-    if re.match("^[01]$", escolha):
-        if escolha == "0":
-            escolha = "cara"
-        elif escolha == "1":
-            escolha = "coroa"
-    else:
+
+    if not validar_entrada(escolha):
         print("Erro: Digite apenas 0 ou 1")
         break
+    
+    escolha = "cara" if escolha == "0" else "coroa"
 
-    if resultado == escolha:
-        print(f"Caiu {resultado}, você ganhou!")
-        break
+    if moeda == cara_ou_coroa[escolha]:
+        print(f"Caiu {escolha}, você ganhou!")
+        vitorias += 1
+        print(f"Vitórias: {vitorias}, Derrotas: {derrotas}")
     else:
-        print(f"Caiu {resultado}, você perdeu!")
-        
+        print(f"Caiu {list(cara_ou_coroa.keys())[list(cara_ou_coroa.values()).index(moeda)]}, você perdeu!")
+        derrotas += 1
+        print(f"Vitórias: {vitorias}, Derrotas: {derrotas}")
+
+    jogar_novamente = input("Deseja jogar novamente? (s/n): ")
+    if jogar_novamente.lower() == "s":
+        continue
+    else:
+        break
 
